@@ -1,0 +1,26 @@
+
+FILE_H="-I${IFILE_PATH}/ifile/include/"
+FILE_C="ilog_file.cpp ilog_server.cpp ilog_manager.cpp ilog_Thread.cpp ilog_CMutexLock.cpp ilog_public.cpp ilog.cpp"
+FILE_O="ilog_file.o ilog_server.o ilog_manager.o ilog_Thread.o ilog_CMutexLock.o ilog_public.o ilog.o"
+IFLAGS="-DSS_64BIT_SERVER -D_REENTRANT -D_DEBUG_INFO_"
+
+######################  判断本机上是否有SDFS ###############################
+if [ -d $SDFS_HOME/include ] ; then
+FILE_H="$FILE_H -I${SDFS_HOME}/include -I${DSC_PATH}/include"
+IFLAGS="$IFLAGS -D_SDFS_LOG_"
+fi
+
+CCS="g++ -fPIC -m64 -g -O2 -fpermissive"
+INCLUDE="-I../include ${FILE_H}"
+
+#######  编译  #########################
+echo "Compiling the  *.cpp $<"
+${CCS} -c ${IFLAGS} ${FILE_C} ${INCLUDE}
+
+#######  C动态库 ########################
+echo "Compiling the  C动态库 $<"
+rm -f libilog.so
+rm -f ../lib/libilog.so
+g++ -shared -o libilog.so ${FILE_O}
+
+mv libilog.so ../lib
