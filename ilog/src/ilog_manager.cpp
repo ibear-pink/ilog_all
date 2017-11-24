@@ -213,7 +213,6 @@ bool ilog_manager::InitLogServer(ilog_cfgserver *pCfgInfo)
 		}
 	}
 	
-	//sleep(3);
 	return true;
 }
 
@@ -469,7 +468,9 @@ void ilog_manager::ilog_Mark(const char *name,UnInt32 threadNum)
 void ilog_manager::WriteLog (string log_name,UnInt32 nLogType, UnInt32 threadNum, char *description)
 {
 	string m_StrLogName = string(m_CfgInfo->log_name);
+#ifdef _DEBUG_INFO_
 	printf("[%d]%s_%d=%s\n",nLogType,log_name.c_str(),threadNum,description);
+#endif
 	long t1 = getUTime();
 	char buffer[MAX_LOG_LENGTH] = {0};
 	char szDescription[MAX_LOG_LENGTH] = {0};
@@ -513,7 +514,9 @@ void ilog_manager::WriteLog (string log_name,UnInt32 nLogType, UnInt32 threadNum
 		pLogFile->DoLog (buffer);
 	}
 	long t4 = getUTime();
+#ifdef _DEBUG_INFO_
 	printf("[%d]%ld,%ld,%ld\n",nLogType,t2-t1,t3-t2,t4-t3);
+#endif
 }
 
 

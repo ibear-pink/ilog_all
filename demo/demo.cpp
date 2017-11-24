@@ -25,7 +25,7 @@ int main(int argc, const char * argv[])
 {
 	ilog_cfgserver *log1 = new ilog_cfgserver();
 	//strcpy(log1->log_path,".");
-	strcpy(log1->log_path,"/sdfslog/CLUSTER_Z00/NRC/log");
+	strcpy(log1->log_path,"/sdfslog/CLUSTER_C00/NRC/log");
 	strcpy(log1->log_name,"demo_sdfs");
 	log1->log_file_num = 4;
 	log1->file_type = 0;

@@ -42,6 +42,9 @@ ilog_file::~ilog_file (void)
 		delete m_File;
 		m_File = NULL;
 	}
+#ifdef _SDFS_LOG_
+	ifile_sdfs_destory(&sp);
+#endif
 	if (NULL != m_MutexLocker)
 	{
 		delete m_MutexLocker;
@@ -140,7 +143,11 @@ int ilog_file::InitLogFile (const string &sLogPath, const string &sLogName, UnIn
 	if (m_Filetype == 0)
 	{
 #ifdef _SDFS_LOG_
-		m_File = new SDFS_GDF_FILE (tLogPath, tLogName);
+		if (0 != ifile_sdfs_init(&sp))
+		{
+			return -1;
+		}
+		m_File = new SDFS_GDF_FILE (&sp,tLogPath, tLogName);
 #endif
 		if (m_File == NULL || 0 != m_File->Open ("a+"))
 		{
@@ -262,7 +269,7 @@ int ilog_file::DoLogAndBackUp (const char *sBuf)
 	if (m_Filetype == 0)
 	{
 #ifdef _SDFS_LOG_
-		pTemp = new SDFS_GDF_FILE (sourcePath, newsourceFile);
+		pTemp = new SDFS_GDF_FILE (&sp,sourcePath, newsourceFile);
 #endif
 		if (0 != pTemp->Open ("a+"))
 		{
@@ -397,7 +404,7 @@ int ilog_file::BackupLog (void)
 	if (m_Filetype == 0)
 	{
 #ifdef _SDFS_LOG_
-		pTemp = new SDFS_GDF_FILE (sourPath, backupName);
+		pTemp = new SDFS_GDF_FILE (&sp,sourPath, backupName);
 #endif
 		if (0 != pTemp->Open ("a+"))
 		{

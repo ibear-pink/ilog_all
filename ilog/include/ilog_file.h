@@ -83,6 +83,9 @@ private:
 	deque2<stLogInfo> m_LogQueue;
 	
 	UnInt32 m_Filetype;//0,фум╗нд╪Ч;1,sdfs
+#ifdef _SDFS_LOG_
+	SDFS sp;
+#endif
 };
 
 #endif
